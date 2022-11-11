@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express');
 const { Cookie } = require('express-session');
 const session = require('express-session');
@@ -10,13 +11,13 @@ const app = express();
 
 const UserModel = require('./models/user')
 
-const config = require('./config/config')
+//const config = require('./config/config')
 
 
  
 
 //database connection
-mongoose.connect(config.conne,{
+mongoose.connect(process.env.MY_MONGO_URI,{
     useNewUrlParser:true,
     useUnifiedTopology:true
 }).then((res)=>{
@@ -24,14 +25,14 @@ mongoose.connect(config.conne,{
 })
 
 const store = new MongodbSession({
-    uri:config.conne,
+    uri:process.env.MY_MONGO_URI,
     collection:'mySession'
 })
 
 //session
 app.use(
     session({
-        secret:config.sessionSecret,
+        secret:process.env.MY_SESSION_SECRET,
         resave:false,
         saveUninitialized:false,
         store:store,

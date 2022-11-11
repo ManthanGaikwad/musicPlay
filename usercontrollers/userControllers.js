@@ -1,11 +1,12 @@
 //const UserModel = require('./models/user')
+require('dotenv').config()
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
 const session = require('express-session');
 const nodeMailer = require('nodemailer')
 const randomstring = require('randomstring');
 
-const config = require('../config/config')
+//const config = require('../config/config')
 
 
 
@@ -46,13 +47,13 @@ const sendVerifyEmail = async(name,email,user_id)=>{
             service:'gmail',
             //requireTLS:true,            
             auth:{
-                user:config.myEmail,
-                pass:config.myPassword
+                user:process.env.NY_EMAIL,
+                pass:process.env.MY_PASSWORD
             }
         })
 
         const mailOption = {
-            from:config.myEmail,
+            from:process.env.NY_EMAIL,
             to:email,
             subject:'verification mail',
             html:'<P> Hi '+ name +' , please click here <a href="http://localhost:200/verify?id='+ user_id+'">verify</a> your mail </p>'
@@ -80,13 +81,13 @@ const sendForgetEmail = async(name,email,token)=>{
             //secure:false,
             service:'gmail',
             auth:{
-                user:config.myEmail,
-                pass:config.myPassword
+                user:process.env.NY_EMAIL,
+                pass:process.env.MY_PASSWORD
             }
         });
         
         const mailOption={
-            from:config.myEmail,
+            from:process.env.NY_EMAIL,
             to:email,
             subject:'Reset your Password',
             html:'<P> Hi '+ name +' , please click here <a href="http://localhost:200/forget-password?token='+ token +'"> Reset </a> your password </p>'
